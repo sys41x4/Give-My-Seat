@@ -1,3 +1,7 @@
+# Developed by Arijit Bhowmick [sys41x4]
+# https://github.com/Arijit-Bhowmick/Give-My-Seat
+# https://github.com/sys41x4/Give-My-Seat
+
 # Writing to an excel 
 # sheet using Python
 #import xlwt
@@ -136,6 +140,26 @@ class program:
 
 		print(json_data)
 
+	def remove_filledup_room():
+		global current_room
+		global room_data
+
+		room_index_list = list(room_data['room_name'].keys())
+		room_list = list(room_data['room_name'].values())
+
+		for column_header in list(room_data.keys()):
+			del room_data[column_header][room_index_list[room_list.index(current_room)]]
+
+
+	def json_data_dump(dump_json_data, excel_data_type):
+
+		if excel_data_type=='student_data':
+			with open(f"{excel_data_type}.json", 'w', encoding = 'utf-8') as json_file:json_file.write(str(dump_json_data))
+		elif excel_data_type=='room_data':
+			with open(f"{excel_data_type}.json", 'w', encoding = 'utf-8') as json_file:json_file.write(str(dump_json_data))
+		elif excel_data_type=='seating_data':
+			with open(f"{excel_data_type}.json", 'w', encoding = 'utf-8') as json_file:json_file.write(str(dump_json_data))
+
 
 	def arrange_seating(table, json_data, value_to_show):
 		global row, col
@@ -191,10 +215,29 @@ class program:
 					#branch_and_replacer_dict.__setitem__(replacer_value, '\n')
 					branch_list[branch_index]='\n'
 		# seating_json_data='{'+seating_json_data[:-2]+'}'
-
-		print(seating_json_data)
 		print()
+
+		# When 1 Room has been successfully booked
+		# the students (Based on their Enrollment Number)
+		# will be removed from the unassigned list
+		# as their seating is confirmed
 		program.remove_confirmed_rollno(seating_json_data)
+
+		# Remove the Filleup Room name and its data Row from the json data
+		program.remove_filledup_room()
+
+		# Generated Seating data will be dumped in seating_data.json
+		program.json_data_dump(seating_json_data, 'seating_data')
+		# Generated student data will be dumped in the student_data.json
+		program.json_data_dump(json_data, 'student_data')
+		# Generated room data will be dumped in the room_data.json
+		program.json_data_dump(room_data, 'room_data')
+
+
+		# On completing 1 room next room would be used
+		global current_room_count
+		current_room_count+=1
+
 		program.print_table(table_matrix, f'Seating Based on :')
 
 
@@ -283,9 +326,6 @@ class program:
 
 		return table_matrix
 
-	def remove_confirmed_seating():
-
-		print()
 
 	def generate_matrix(json_data, sample_count=1):
 		# Creating 10 sample matrix
@@ -319,6 +359,9 @@ class program:
 		# # Print the roll numbers in their provided seating
 		# program.arrange_seating(max_seating_matrix, json_data, 'std_aadhar')
 
+	def load_json_data():
+		print()
+
 	def generate_seating(file_path='', sheet_name='', room_detail_sheet='', sample_count=1):
 		#file_path = 'data.xlsx'
 		################
@@ -339,6 +382,7 @@ class program:
 		else:
 			json_data=json.loads(pd_read_excel(open(file_path, 'rb'), sheet_name=sheet_name).to_json())
 		print(json_data)
+		global room_data
 		room_data = json.loads(pd_read_excel(open(file_path, 'rb'), sheet_name=room_detail_sheet).to_json())
 		print(room_data)
 
