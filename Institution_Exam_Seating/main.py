@@ -8,6 +8,7 @@
 
 import os
 import openpyxl
+from datetime import datetime
 from pandas import read_excel as pd_read_excel
 from numpy import array as np_array
 import json
@@ -28,7 +29,8 @@ class GiveMySeat:
 					if table[i][j]==branch:
 						table_matrix[i][j]=table[i][j]
 
-			GiveMySeat.print_table(table_matrix, f'{branch} Seating [{current_block}-Block {current_room}]')
+			if preview_seating_matrix=="Y":
+				GiveMySeat.print_table(table_matrix, f'{branch} Seating [{current_block}-Block {current_room}]')
 
 
 
@@ -124,7 +126,7 @@ class GiveMySeat:
 			for column_header in list(student_data.keys()):
 				del student_data[column_header][rollnum_index_list[rollnum_list.index(roll)]]
 
-		print(student_data)
+		#print(student_data)
 
 	def remove_filledup_room():
 		global current_room
@@ -138,13 +140,14 @@ class GiveMySeat:
 
 
 	def json_data_dump(dump_json_data, excel_data_type):
-
-		if excel_data_type=='student_data':
-			with open(f"{excel_data_type}.json", 'w', encoding = 'utf-8') as json_file:json.dump(dump_json_data, json_file)
-		elif excel_data_type=='room_data':
-			with open(f"{excel_data_type}.json", 'w', encoding = 'utf-8') as json_file:json.dump(dump_json_data, json_file)
-		elif excel_data_type=='seating_data':
-			with open(f"{excel_data_type}.json", 'w', encoding = 'utf-8') as json_file:json.dump(dump_json_data, json_file)
+		global default_json_file_paths
+		#default_json_file_paths={"student_data_path":f"{book_room_timeperiod}/unassigned_student_data.json", "room_data_path":f"{book_room_timeperiod}/unassigned_room_data.json", "seating_data_path":f"{book_room_timeperiod}/confirmed_seating_data.json"} 
+		if excel_data_type=='unassigned_student_data':
+			with open(default_json_file_paths["student_data_path"], 'w', encoding = 'utf-8') as json_file:json.dump(dump_json_data, json_file)
+		elif excel_data_type=='unassigned_room_data':
+			with open(default_json_file_paths["room_data_path"], 'w', encoding = 'utf-8') as json_file:json.dump(dump_json_data, json_file)
+		elif excel_data_type=='confirmed_seating_data':
+			with open(default_json_file_paths["seating_data_path"], 'w', encoding = 'utf-8') as json_file:json.dump(dump_json_data, json_file)
 
 
 	def arrange_seating(table, student_data, value_to_show):
@@ -202,24 +205,26 @@ class GiveMySeat:
 		# Remove the Filleup Room name and its data Row from the json data
 		GiveMySeat.remove_filledup_room()
 
-		# Generated Seating data will be dumped in seating_data.json
-		GiveMySeat.json_data_dump(all_seating_data, 'seating_data')
-		# Generated student data will be dumped in the student_data.json
-		GiveMySeat.json_data_dump(student_data, 'student_data')
-		# Generated room data will be dumped in the room_data.json
-		GiveMySeat.json_data_dump(room_data, 'room_data')
+		# Generated Seating data will be dumped in confirmed_seating_data.json
+		GiveMySeat.json_data_dump(all_seating_data, 'confirmed_seating_data')
+		# Generated student data will be dumped in the unassigned_student_data.json
+		GiveMySeat.json_data_dump(student_data, 'unassigned_student_data')
+		# Generated room data will be dumped in the unassigned_room_data.json
+		GiveMySeat.json_data_dump(room_data, 'unassigned_room_data')
 
 
 		# On completing 1 room next room would be used
+		print(f"\n[{current_block}-{current_room}] Seating Confirmed\n\n{len(student_data['std_rollnum'])} Students will be allocated to next room")
 
-		GiveMySeat.print_table(table_matrix, f'Seating Based on [{current_block}-{current_room}]:')
+		if preview_seating_matrix=="Y":
+			GiveMySeat.print_table(table_matrix, f'Seating Based on [{current_block}-{current_room}]:')
 
 		# Assign Seating for Remainig Students | Enrollment_No
 
 		GiveMySeat.load_json("from_pre_json", default_json_file_paths)
 
 		# total_student_count
-		GiveMySeat.generate_seating(student_data, room_data)
+		GiveMySeat.generate_seating()
 
 
 
@@ -260,7 +265,8 @@ class GiveMySeat:
 					# On adding 1 entry of branch name 
 					# in table_matrix, 1 entry/value
 					# will be deleted from the branch_frequency dict 
-					branch_frequency[prev_value]-=1
+					if prev_value!='':
+						branch_frequency[prev_value]-=1
 					## print(row_finish, col)
 					row_finish+=1
 					matrix_completed+=1
@@ -305,8 +311,8 @@ class GiveMySeat:
 		global current_block, current_room
 		total_branches = list(student_data['std_branch'].values())
 
-		if len(total_branches)>row*col:
-			print(f"Mimimum {len(total_branches)-row*col} students will have to be allocated to another room")
+		# if len(total_branches)>row*col:
+		# 	print(f"Mimimum {len(total_branches)-row*col} students will have to be allocated to another room")
 
 		matrix_samples=[]
 		empty_seat_count=[]
@@ -320,10 +326,11 @@ class GiveMySeat:
 
 		max_seating_matrix = matrix_samples[empty_seat_count.index(min(empty_seat_count))]
 
-		GiveMySeat.print_indv_branch_table(max_seating_matrix)
+		if preview_seating_matrix=="Y":
+			GiveMySeat.print_indv_branch_table(max_seating_matrix)
 
-		# Print the formed matrix
-		GiveMySeat.print_table(max_seating_matrix, f'Overall Branch Seating in [{current_block}-Block {current_room}:')
+			# Print the formed matrix
+			GiveMySeat.print_table(max_seating_matrix, f'Overall Branch Seating in [{current_block}-Block {current_room}:')
 
 		# Print the roll numbers in their provided seating
 		GiveMySeat.arrange_seating(max_seating_matrix, student_data, 'std_rollnum')
@@ -368,16 +375,16 @@ class GiveMySeat:
 			student_data=json.loads(pd_read_excel(open(json_data_to_use["workbook_file_path"], 'rb'), sheet_name=json_data_to_use["student_data_sheet_name"]).to_json())
 			room_data = json.loads(pd_read_excel(open(json_data_to_use["workbook_file_path"], 'rb'), sheet_name=json_data_to_use["room_data_sheet_name"]).to_json())
 			
-			GiveMySeat.json_data_dump(student_data, "student_data")
-			GiveMySeat.json_data_dump(student_data, "room_data")
-			GiveMySeat.json_data_dump(all_seating_data, "seating")
+			GiveMySeat.json_data_dump(student_data, "unassigned_student_data")
+			GiveMySeat.json_data_dump(student_data, "unassigned_room_data")
+			GiveMySeat.json_data_dump(all_seating_data, "confirmed_seating_data")
 
 		elif process_to_use=="from_pre_json":
 			
 			GiveMySeat.load_json_from_file(json_data_to_use)
 
 
-	def generate_seating(student_json_data, room_json_data):
+	def generate_seating():
 
 		global student_data
 		global room_data
@@ -386,7 +393,7 @@ class GiveMySeat:
 		total_student_count = len(student_data['std_rollnum'].values())
 
 		if total_student_count==0:
-			print("All Students has been assigned to their calculated seating")
+			print("\nAll Students has been assigned to their calculated seating\n\nSeating Data has been dumped into \""+default_json_file_paths["seating_data_path"]+"\" file")
 			exit()
 
 		# Gather Room Data
@@ -426,62 +433,23 @@ Total Student Number is greater than Total Seating
 Please add additional rooms with additional seating in Excel Sheet/JSON File\n""")
 			exit()
 
-			
-			
-
-	def write_to_excel(file_path, sheet_name, matrix, room_name=''):
-		col_name_lst = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-		## For xls File
-		# # load the excel file
-		# load_excel_file = xlrd.open_workbook(file_path)
-		 
-		# # copy the contents of excel file
-		# copy_excel_content = copy(load_excel_file)
-		 
-		# # open the first sheet
-		# w_sheet = copy_excel_content.get_sheet(0)
-		 
-		# # row number = 0 , column number = 1
-		# w_sheet.write(0,1,'Modified !')
-		 
-		# # save the file
-		# wb.save('UserBook.xls')
-
-		## For .xlsx file
-		workbook = openpyxl.load_workbook(file_path)
-
-		# The workbook object is then used to add new
-		# worksheet via the add_worksheet() method.
-		worksheet = workbook.sheetnames[sheet_name]
-		 
-		# Use the worksheet object to write
-		# data via the write() method.
-		worksheet.write('A1', 'Hello..')
-		worksheet.write('B1', 'Geeks')
-		worksheet.write('C1', 'For')
-		worksheet.write('D1', 'Geeks')
-		 
-		# Finally, close the Excel file
-		# via the close() method.
-		workbook.save('text2.xlsx')
-
 	def main():
-		#global row, col
+		
 		global sample_count
 		global default_json_file_paths
+		global preview_seating_matrix
+		global book_room_timeperiod
 
-		# Default File Storage Path
-		default_json_file_paths={"student_data_path":"student_data.json", "room_data_path":"room_data.json", "seating_data_path":"seating_data.json"}
+		
 
-		sample_count=10
-		#row,col=13,4
+		# sample_count=10
 
-		#file_path = 'data.xlsx'
-		#sheet_name = 'Sheet3'
-		#room_detail_sheet = 'allowed_room'
+		# file_path = 'data.xlsx'
+		# sheet_name = 'Sheet3'
+		# room_detail_sheet = 'Sheet4'
 		workbook_data = {"workbook_file_path":"", "student_data_sheet_name":"", "room_data_sheet_name":""}
 
-		#pre_json_data_available='' # Considered as No when entered (Default: NO)
+		# pre_json_data_available='' # Considered as No when entered (Default: NO)
 		pre_json_paths={"student_data_path":"", "room_data_path":"", "seating_data_path":""}
 		
 		try:
@@ -526,11 +494,26 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 
 				json_data_to_use = workbook_data
 		
+			book_room_timeperiod = input("\nTime Period of Seat Booking (<From-Date>-<To-Date>) => ")
+			book_room_timeperiod+=f"-[{str(datetime.date(datetime.now()))}]"
+			
+			# Default File Storage Path
+			default_json_file_paths={"student_data_path":f"{book_room_timeperiod}/unassigned_student_data.json", "room_data_path":f"{book_room_timeperiod}/unassigned_room_data.json", "seating_data_path":f"{book_room_timeperiod}/confirmed_seating_data.json"}
+
+			sample_count = int(input("\nWhat Sample Count Should be taken ? (Default=1) => "))
+			preview_seating_matrix = input("\nDo you want to get the output of the seating in terminal ? Y/N (Default: N)").upper()
+			
+
+			if preview_seating_matrix!="Y":
+				preview_seating_matrix = 'N'
+
+			os.mkdir(book_room_timeperiod)
 		except KeyboardInterrupt:
 			print("\nThankyou For Using Give-My-Seat :)")
 			exit()
+
 		GiveMySeat.load_json(process_to_use, json_data_to_use)
-		GiveMySeat.generate_seating(student_data, room_data)
+		GiveMySeat.generate_seating()
 
 
 if __name__ == "__main__":
