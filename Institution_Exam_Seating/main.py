@@ -149,7 +149,35 @@ class GiveMySeat:
 		elif excel_data_type=='confirmed_seating_data':
 			with open(default_json_file_paths["seating_data_path"], 'w', encoding = 'utf-8') as json_file:json.dump(dump_json_data, json_file)
 
+	def dump_json_to_excel():
+		global book_room_timeperiod
+		global all_seating_data
 
+		workbook = openpyxl.Workbook() 
+		sheet = workbook.active
+		sheet.title = "Confirmed Seating Data"
+
+		# Generate Column Headers
+		column_header=tuple(all_seating_data[tuple(all_seating_data.keys())[0]].keys())
+
+		for i in range(len(column_header)):
+			cell = sheet.cell(row = 1, column = i+1)
+			cell.value = column_header[i]
+
+		counter=0
+		for i in range(2, (len(tuple(all_seating_data.keys()))+2)):
+			for j in range(len(column_header)):
+
+				# using sheet object's cell() method. 
+				cell = sheet.cell(row = i, column = j+1) 
+				  
+				# writing values to cells 
+				cell.value = all_seating_data[tuple(all_seating_data.keys())[counter]][column_header[j]]
+
+			counter+=1
+		workbook.save(f"{book_room_timeperiod}/assigned_seating_data.xlsx")
+		print(f"\nExcel WorkBook has been dumped to {book_room_timeperiod}/assigned_seating_data.xlsx")
+		
 	def arrange_seating(table, student_data, value_to_show):
 		global row, col
 		global seating_json_data
@@ -217,7 +245,7 @@ class GiveMySeat:
 		print(f"\n[{current_block}-{current_room}] Seating Confirmed\n\n{len(student_data['std_rollnum'])} Students will be allocated to next room")
 
 		if preview_seating_matrix=="Y":
-			GiveMySeat.print_table(table_matrix, f'Seating Based on [{current_block}-{current_room}]:')
+			GiveMySeat.print_table(table_matrix, f'Seating Matrix (Based on Ennrollment Number) in [{current_block}-{current_room}]')
 
 		# Assign Seating for Remainig Students | Enrollment_No
 
@@ -330,7 +358,7 @@ class GiveMySeat:
 			GiveMySeat.print_indv_branch_table(max_seating_matrix)
 
 			# Print the formed matrix
-			GiveMySeat.print_table(max_seating_matrix, f'Overall Branch Seating in [{current_block}-Block {current_room}:')
+			GiveMySeat.print_table(max_seating_matrix, f'Overall Branch Seating in [{current_block}-Block {current_room}]')
 
 		# Print the roll numbers in their provided seating
 		GiveMySeat.arrange_seating(max_seating_matrix, student_data, 'std_rollnum')
@@ -389,11 +417,15 @@ class GiveMySeat:
 		global student_data
 		global room_data
 		global total_student_count # Total Student Number
+		global want_excel_dump
 
 		total_student_count = len(student_data['std_rollnum'].values())
 
 		if total_student_count==0:
 			print("\nAll Students has been assigned to their calculated seating\n\nSeating Data has been dumped into \""+default_json_file_paths["seating_data_path"]+"\" file")
+
+			if want_excel_dump=='Y':
+				GiveMySeat.dump_json_to_excel()
 			exit()
 
 		# Gather Room Data
@@ -439,7 +471,7 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 		global default_json_file_paths
 		global preview_seating_matrix
 		global book_room_timeperiod
-
+		global want_excel_dump
 		
 
 		# sample_count=10
@@ -500,11 +532,16 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 			# Default File Storage Path
 			default_json_file_paths={"student_data_path":f"{book_room_timeperiod}/unassigned_student_data.json", "room_data_path":f"{book_room_timeperiod}/unassigned_room_data.json", "seating_data_path":f"{book_room_timeperiod}/confirmed_seating_data.json"}
 
+			want_excel_dump = input("Do you want to dump to Excel WorkBook as Well ? Y/N (Default: N) => ").upper()
+
 			sample_count = int(input("\nWhat Sample Count Should be taken ? (Default=1) => "))
-			preview_seating_matrix = input("\nDo you want to get the output of the seating in terminal ? Y/N (Default: N)").upper()
+			preview_seating_matrix = input("\nDo you want to get the output of the seating in terminal ? Y/N (Default: N) => ").upper()
 			
 
-			if preview_seating_matrix!="Y":
+			if want_excel_dump!='Y':
+				want_excel_dump = 'N'
+
+			if preview_seating_matrix!='Y':
 				preview_seating_matrix = 'N'
 
 			os.mkdir(book_room_timeperiod)
@@ -514,7 +551,6 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 
 		GiveMySeat.load_json(process_to_use, json_data_to_use)
 		GiveMySeat.generate_seating()
-
 
 if __name__ == "__main__":
 	GiveMySeat.main()
