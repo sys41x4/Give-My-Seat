@@ -1,5 +1,5 @@
 # Give-My-Seat
-## [Institution Exam Seating]
+## [Institution Exam Seating] [Generate Seating Data]
 
 ---
 

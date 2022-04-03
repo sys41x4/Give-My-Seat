@@ -1,5 +1,5 @@
 # Give-My-Seat
-## [Generate Admit Card]
+## [Institute Exam Seating] [Generate Admit Card]
 ---
 
 ### Script Usage
