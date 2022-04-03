@@ -19,8 +19,8 @@ Then Click on `Download Admit Card` to download the Admit Card as PDF Format
 
 ### Web App Preview
 
-[screenshot1](sample_images/generate_admit_card_webapp_screenshot1.png)
-[screenshot2](sample_images/generate_admit_card_webapp_screenshot2.png)
+![screenshot1](sample_images/generate_admit_card_webapp_screenshot1.png)
+![screenshot2](sample_images/generate_admit_card_webapp_screenshot2.png)
 
 ### Error Fixing
 If you do fix any error regarding `wkhtmltopdf` error
