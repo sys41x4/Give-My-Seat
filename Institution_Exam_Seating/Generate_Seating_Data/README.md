@@ -51,6 +51,23 @@ b. Enter `Student Data Sheet Name`
 c. Enter `Room Data Sheet Name`
 	Example : `room_data`
 
+d. Enter `Time Period of Seat Booking`
+	Example : `20.03.2022-20.04.2022`
+
+e. Enter `Do you want to dump generated data to excel ?`
+	Example : `Y` or `N`
+
+f. Enter `Sample Count (Used during Matrix Formation)`
+	The More the sample count,
+	the more will the script use the system resource,
+	and the more perfect will be the seating data
+	(Default: 1)
+	Example : `10`
+
+g. Enter `Want to get the output in terminal ?`
+	Example : `Y` or `N`
+
+
 [2] Using Previous JSON Files created using this script
 
 a. Enter `student_data` `JSON` File Location
@@ -63,10 +80,25 @@ c. Enter `seating_data` `JSON` File Location
 		Example : `seating_data.json`
 		We can also leave it empty without entring any data, if there is no previous `seating_data` JSON file available
 
+d. Enter `Time Period of Seat Booking`
+	Example : `20.03.2022-20.04.2022`
+
+e. Enter `Do you want to dump generated data to excel ?`
+	Example : `Y` or `N`
+
+f. Enter `Sample Count (Used during Matrix Formation)`
+	The More the sample count,
+	the more will the script use the system resource,
+	and the more perfect will be the seating data
+	(Default: 1)
+	Example : `10`
+
+g. Enter `Want to get the output in terminal ?`
+	Example : `Y` or `N`
 ---
 
-* After providing data the `seating_data.json` file will be created where all students with their **Seating Details** will be available in `seating_data.json` file
+* After providing data the `assigned_seating_data.json` file will be created where all students with their **Seating Details** will be available in `assigned_seating_data.json` file
 
-* `room_data.json` will be created which show the leftover/unallocated Rooms
+* `unassigned_room_data.json` will be created which show the leftover/unallocated Rooms
 
-* `student_data.json` will be created in each step, while at the end there would be an empty data dictionary, with only some keys
+* `unassigned_student_data.json` will be created in each step, while at the end there would be an empty data dictionary, with only some keys
