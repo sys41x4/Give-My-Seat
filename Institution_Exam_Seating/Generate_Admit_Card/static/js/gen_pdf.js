@@ -8,7 +8,7 @@ $(document).ready(function() {
             aadhar: $('#aadhar').val(),
                 }),
             type : 'POST',
-            url : '/get_admit_link',
+            url : '/generate_admitcard',
             dataType: 'json',
             contentType: 'application/json',
             headers: {'roll':roll, 'aadhar':aadhar}
