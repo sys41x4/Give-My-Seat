@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{institute_name}} (Institution Exam Seating) | {{roll_num}}</title>
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta name="description" content="">
+    <meta name="author" content="Arijit-Bhowmick">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="https://avatars.githubusercontent.com/u/66935336?v=4">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://avatars.githubusercontent.com/u/66935336?v=4">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://avatars.githubusercontent.com/u/66935336?v=4">
+
+
+    <!-- Style-Sheet Files -->
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+    <!-- <link rel= "stylesheet" type= "text/css" href= "css/style.css"> -->
+<style type="text/css">
+    
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Secular+One&family=Space+Mono&display=swap');
+
+    label {
+        font-weight: bold;
+    }
+
+    .meta-gray {
+        -webkit-filter: grayscale(1);
+    }
+    .meta-normal {
+        -webkit-filter: grayscale(0);
+    }
+
+    .regular-text {
+        color: #000;
+        font-family: 'Space Mono', monospace;
+    }
+
+    .bold-heading {
+        color: #000;
+        font-family: 'Press Start 2P', cursive;
+
+    }
+
+    .container{
+        padding: 1%;
+        border: 3px solid #202124;
+        border-radius: 2%;
+        background-color: #202124;
+    }
+    body{
+        background-color: #fff;
+    }
+</style>
+
+    <!-- JS Files -->
+
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+    <!-- <script src="js/app.js"></script> -->
+    
+
+</head>
+<body>
+
+    <div style="margin-top:30px" class="row">
+        <div class="col-md-5 offset-3">
+
+
+            <div class="bold-heading column">
+                <img align="left" src="https://avatars.githubusercontent.com/u/66935336?v=4"/ style="width: 60px;">
+                <h1 style="text-align: center">{{institute_name}}</h1>
+            </div>
+
+            <div class="regular-text column">
+                <img align="right" src="data:image/png;base64, {{base64_qr_str}}"/>
+                </br>
+            </div>
+
+            <div class="regular-text column">
+                <label>Student Name :</label> {{std_name}}
+                </br>
+                <label>Institute Name :</label> {{institute_name}}
+                </br>
+                <label>Branch Name :</label> {{branch_name}}
+                </br>
+                <label>Roll Number :</label> {{roll_num}}
+                </br>
+                <label>Aadhar Number :</label> {{aadhar_num}}
+                </br>
+                <label>Block Number :</label> {{block_num}}
+                </br>
+                <label>Room Number :</label> {{room_num}}
+                </br>
+                <label for="row">Row Number :</label> {{row}}
+                </br>
+                <label>Column Number :</label> {{column}}
+                </br></br><br>
+            </div>
+
+        </div>
+    </div>
+    <footer>
+        <div class="ss-copyright">
+            Developed by <b>Arijit Bhowmick</b><br>
+            Project is available in <b>https://github.com/Arijit-Bhowmick/Give-My-Seat</b><br><br>
+            <span>© Copyright <b>Arijit Bhowmick</b> <script>document.write(new Date().getFullYear())</script></span>
+        </div>
+    </footer>
+</body>
+</html>

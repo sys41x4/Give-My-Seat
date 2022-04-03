@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Give My Seat (Institution Exam Seating)</title>
+    
+    <!--- basic page needs
+    ================================================== -->
+    <meta name="description" content="">
+    <meta name="author" content="Arijit-Bhowmick">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="https://avatars.githubusercontent.com/u/66935336?v=4">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://avatars.githubusercontent.com/u/66935336?v=4">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://avatars.githubusercontent.com/u/66935336?v=4">
+
+
+    <!-- Style-Sheet Files -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+
+    <!-- JS Files -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/gen_pdf.js') }}"></script>
+    
+
+</head>
+<body>
+
+    <div style="margin-top:30px" class="row">
+        <div class="col-md-5 offset-3">
+            <form id="send-message" method="post">
+            <!-- <form> -->
+                <!--Enrollment Number-->
+                <div class="bold-heading column">
+                    <img align="left" src="https://avatars.githubusercontent.com/u/66935336?v=4"/ style="width: 60px;">
+                    <h1 style="text-align: center">Give My Seat</h1><br><br>
+                </div>
+                <div class="form-group regular-text ">
+                    <label for="roll">Enrollment Number</label>
+                    <input id="roll" type="text" class="form-control">
+                </div>
+                <!--Aadhar Number-->
+                <div class="form-group regular-text ">
+                    <label for="aadhar">Aadhar Number</label>
+                    <input id="aadhar" type="text" class="form-control">
+                </div>
+                
+                <input id='show_admit_card' style="margin-top: 30px" class="btn btn-primary btn-lg btn-block btn-buy" type="submit" onClick="gen_admitcard()" value="Show Admit Card">
+                <!-- <input type="button" value="Change site" onClick="gen_admitcard()"/> -->
+
+            </form>
+
+                <div class="form-group regular-text ">
+
+                    </br>
+                    <a id='download_admit_card' href="/aadhar" download="">
+                    <input style="background-color: #4CAF50;border-color: #4CAF50;margin-top: 30px" class="btn btn-primary btn-lg btn-block" type="submit" value="Download Admit Card">
+                    </a>
+                    <br><br>
+                    <label>Admit Card (Preview): </label>
+                    <iframe class="responsive-iframe" id="preview_admit_card" src="/aadhar"></iframe>
+
+                    </br>
+                    
+                </div>
+<!--                     </div>
+                </div>   --> 
+   
+
+        </div>
+
+    </div>
+<footer>
+    <div class="regular-text ss-copyright">
+        Developed by <b>Arijit Bhowmick</b><br>
+        Project is available in <b>https://github.com/Arijit-Bhowmick/Give-My-Seat</b><br><br>
+        <span>© Copyright <b>Arijit Bhowmick</b> <script>document.write(new Date().getFullYear())</script></span>
+    </div>
+</footer>
+</body>
+</html>
