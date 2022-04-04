@@ -1,4 +1,4 @@
-<p align="center"><img src="images/icon.png"></p>
+<p align="center"><img style="width: 20%;height: 20%" src="images/icon.png"></p>
 
 
 # Give-My-Seat
