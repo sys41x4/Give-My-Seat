@@ -1,5 +1,5 @@
 # Give-My-Seat
-Give-My-Seat is an Advanced Seat Booking System
+## Give-My-Seat is an Advanced Seat Booking System
 **Developed by Arijit-Bhowmick [sys41x4]**
 ---
 
