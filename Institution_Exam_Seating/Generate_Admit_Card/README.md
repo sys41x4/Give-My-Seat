@@ -8,6 +8,12 @@
 python3 app.py <confirmed_seating_data.json_File_Path> <Institute_Name>
 ```
 
+Example:
+
+```
+python3 .\app.py .\confirmed_seating_data.json "Give My Seat"
+```
+
 ### Web App Usage
 
 After Entering `Roll Number` and `Aadhar Number`
@@ -25,4 +31,4 @@ Then Click on `Download Admit Card` to download the Admit Card as PDF Format
 ### Error Fixing
 If you do fix any error regarding `wkhtmltopdf` error
 Please do use https://wkhtmltopdf.org/ to download
-and refer the `wkhtmltopdf` binary in the `app.py` script
+and refer the `wkhtmltopdf` binary path in the `wkhtmltopdf_path` variable in `app.py` script.
