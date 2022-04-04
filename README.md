@@ -1,3 +1,6 @@
+<p align="center"><img src="images/icon.png"></p>
+
+
 # Give-My-Seat
 ## Give-My-Seat is an Advanced Seat Booking System
 **Developed by Arijit-Bhowmick [sys41x4]**
