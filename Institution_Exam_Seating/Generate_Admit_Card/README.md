@@ -17,7 +17,7 @@ python3 .\app.py .\confirmed_seating_data.json "Give My Seat"
 ### Web App Usage
 
 After Entering `Roll Number` and `Aadhar Number`
-click on `Show Admit Card` Button.
+click on `Generate Admit Card` Button.
 
 Wait for a bit, if everything went well then a Admit Card will be generated for preview.
 Then Click on `Download Admit Card` to download the Admit Card as PDF Format
@@ -27,6 +27,11 @@ Then Click on `Download Admit Card` to download the Admit Card as PDF Format
 
 ![screenshot1](sample_images/generate_admit_card_webapp_screenshot1.png)
 ![screenshot2](sample_images/generate_admit_card_webapp_screenshot2.png)
+
+### Want to change images in PDF ?
+
+1. Update `logo_link` variable value with the local image (jpg) link you want to embed.
+2. Update `pdf_logo` variable value with Icon Image link (Not with the local image) you want to embed.
 
 ### Error Fixing
 If you do fix any error regarding `wkhtmltopdf` error
