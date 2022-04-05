@@ -3,6 +3,7 @@ import pdfkit
 
 
 import qrcode
+from PIL import Image
 from io import BytesIO
 from datetime import datetime
 
@@ -29,7 +30,11 @@ except IndexError:
 	exit()
 
 
+## embed logo in qr
+logo_link = 'sample_images/logo.jpg'
 
+## PDF logo on PDF
+pdf_logo = 'https://avatars.githubusercontent.com/u/66935336?v=4'
 
 ## Flask Configurations
 app = Flask(__name__)
@@ -52,11 +57,11 @@ def home():
 def roll_not_provided(aadhar_num):
 
 	std_seating_info={"std_name": "","branch_name": "","roll_num": "Enrollment Number Not Provided","aadhar_num": aadhar_num,"block_num": "","room_num": "","row": "","column": ""}
-	std_seating_info.update({'base64_qr_str':gen_verifiable_qr_code(std_seating_info), 'institute_name':institute_name})
 	return generate_pdf(std_seating_info)
 
 def generate_pdf(std_seating_info):
-	rendered = render_template("pdf_templete.html", std_name = std_seating_info['std_name'], branch_name = std_seating_info['branch_name'], roll_num = std_seating_info['roll_num'], aadhar_num = std_seating_info['aadhar_num'], block_num = std_seating_info['block_num'], room_num = std_seating_info['room_num'], row = std_seating_info['row'], column = std_seating_info['column'], base64_qr_str=std_seating_info['base64_qr_str'], institute_name=std_seating_info['institute_name'])
+	std_seating_info.update({'base64_qr_str':gen_verifiable_qr_code(std_seating_info), 'institute_name':institute_name, 'pdf_logo':pdf_logo})
+	rendered = render_template("pdf_templete.html", std_name = std_seating_info['std_name'], branch_name = std_seating_info['branch_name'], roll_num = std_seating_info['roll_num'], aadhar_num = std_seating_info['aadhar_num'], block_num = std_seating_info['block_num'], room_num = std_seating_info['room_num'], row = std_seating_info['row'], column = std_seating_info['column'], pdf_logo=std_seating_info['pdf_logo'], base64_qr_str=std_seating_info['base64_qr_str'], institute_name=std_seating_info['institute_name'])
 
 	pdf = pdfkit.from_string(rendered, False, configuration=pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path))
 
@@ -73,9 +78,6 @@ def admitcard(aadhar_num, roll_num):
 	global confirmed_seating_data_path
 
 	std_seating_info = fetch_json_data(confirmed_seating_data_path, roll_num)
-
-	std_seating_info.update({'base64_qr_str':gen_verifiable_qr_code(std_seating_info), 'institute_name':institute_name})
-
 	
 
 	return generate_pdf(std_seating_info)
@@ -92,12 +94,25 @@ def fetch_json_data(confirmed_seating_data_path, roll_num):
 	return std_seating_info
 
 def gen_verifiable_qr_code(student_seating_data):
+	global logo_link
+	logo = Image.open(logo_link)
+
+ 	# taking base width
+	basewidth = 65
+
+ 	# adjust image size
+	wpercent = (basewidth/float(logo.size[0]))
+	hsize = int((float(logo.size[1])*float(wpercent)))
+	logo = logo.resize((basewidth, hsize), Image.ANTIALIAS)
+
+	qr_color = '#212529'
+
 	qr = qrcode.QRCode(
 		version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_H,
-        box_size=3,
-        border=3,
-    )
+		error_correction=qrcode.constants.ERROR_CORRECT_H,
+		box_size=3,
+		border=3,
+	)
 
 	student_seating_data = json.dumps(student_seating_data, indent = 1)
 
@@ -105,7 +120,14 @@ def gen_verifiable_qr_code(student_seating_data):
 
 	qr.make(fit=True)
 
-	qr_img = qr.make_image()
+	# adding color to QR code
+	qr_img = qr.make_image(
+		fill_color=qr_color, back_color="white").convert('RGB')
+
+	# set size of QR code
+	pos = ((qr_img.size[0] - logo.size[0]) // 2,
+	       (qr_img.size[1] - logo.size[1]) // 2)
+	qr_img.paste(logo, pos)
 
 	buffered = BytesIO()
 	qr_img.save(buffered, format="PNG")
