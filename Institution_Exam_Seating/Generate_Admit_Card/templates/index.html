@@ -29,7 +29,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="{{ url_for('static', filename='js/gen_pdf.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     
 
 </head>
@@ -37,7 +37,7 @@
 
     <div style="margin-top:30px" class="row">
         <div class="col-md-5 offset-3">
-            <form id="send-message" method="post">
+            <form id="generate-admitcard" method="post">
             <!-- <form> -->
                 <!--Enrollment Number-->
                 <div class="bold-heading column">
@@ -50,12 +50,11 @@
                 </div>
                 <!--Aadhar Number-->
                 <div class="form-group regular-text ">
-                    <label for="aadhar">Aadhar Number</label>
+                    <label for="aadhar">Aadhar Number (Government Identity)</label>
                     <input id="aadhar" type="text" class="form-control">
                 </div>
                 
-                <input id='show_admit_card' style="margin-top: 30px" class="btn btn-primary btn-lg btn-block btn-buy" type="submit" onClick="gen_admitcard()" value="Show Admit Card">
-                <!-- <input type="button" value="Change site" onClick="gen_admitcard()"/> -->
+                <input id='show_admit_card' style="margin-top: 30px" class="btn btn-primary btn-lg btn-block btn-buy" type="submit" onClick="gen_admitcard()" value="Generate Admit Card">
 
             </form>
 
