@@ -3,6 +3,7 @@ import pdfkit
 
 
 import qrcode
+from PIL import Image
 from io import BytesIO
 from datetime import datetime
 
@@ -92,6 +93,21 @@ def fetch_json_data(confirmed_seating_data_path, roll_num):
 	return std_seating_info
 
 def gen_verifiable_qr_code(student_seating_data):
+
+	## embed logo in qr
+	Logo_link = 'sample_images/logo.jpg'
+ 
+	logo = Image.open(Logo_link)
+	# taking base width
+	basewidth = 65
+
+	# adjust image size
+	wpercent = (basewidth/float(logo.size[0]))
+	hsize = int((float(logo.size[1])*float(wpercent)))
+	logo = logo.resize((basewidth, hsize), Image.ANTIALIAS)
+
+
+	qr_color = '#212529'
 	qr = qrcode.QRCode(
 		version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
@@ -99,13 +115,21 @@ def gen_verifiable_qr_code(student_seating_data):
         border=3,
     )
 
+
 	student_seating_data = json.dumps(student_seating_data, indent = 1)
 
 	qr.add_data(student_seating_data)
 
 	qr.make(fit=True)
 
-	qr_img = qr.make_image()
+	# adding color to QR code
+	qr_img = qr.make_image(
+	    fill_color=qr_color, back_color="white").convert('RGB')
+
+	# set size of QR code
+	pos = ((qr_img.size[0] - logo.size[0]) // 2,
+	       (qr_img.size[1] - logo.size[1]) // 2)
+	qr_img.paste(logo, pos)
 
 	buffered = BytesIO()
 	qr_img.save(buffered, format="PNG")
