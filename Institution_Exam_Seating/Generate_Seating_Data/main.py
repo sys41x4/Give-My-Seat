@@ -474,7 +474,7 @@ GMS_IES_GSD
 
 			if want_excel_dump=='Y':
 				GiveMySeat.dump_json_to_excel()
-			exit()
+			sys.exit()
 
 		# Gather Room Data
 		GiveMySeat.gather_room_data(room_data)
@@ -511,7 +511,7 @@ GMS_IES_GSD
 Total Seats Provided = {total_seat_provided}
 Total Student Number is greater than Total Seating
 Please add additional rooms with additional seating in Excel Sheet/JSON File\n""")
-			exit()
+			sys.exit()
 
 	def main():
 		
@@ -597,7 +597,7 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 			os.mkdir(book_room_timeperiod)
 		except KeyboardInterrupt:
 			print("\nThankyou For Using Give-My-Seat :)")
-			exit()
+			sys.exit()
 
 		GiveMySeat.load_json(process_to_use, json_data_to_use)
 		GiveMySeat.generate_seating()
