@@ -123,13 +123,17 @@ Data generated will be created under `<Starting_Date>-<Ending Date>-<Current Dat
 ### Data Screenshots
 
 **Sample Student Data**
+
 ![sample_student_data](Sample_Images/sample_student_data.png)
 
 **Sample Room Data**
+
 ![sample_room_data](Sample_Images/sample_room_data.png)
 
 **Generated Files**
+
 ![generated_files](Sample_Images/generated_files.png)
 
 **Assigned Seating Data [Excel Output]**
+
 ![assigned_seating_excel_output](Sample_Images/assigned_seating_excel_output.png)
