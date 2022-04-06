@@ -16,9 +16,51 @@ import sys
 # run the script with the arguments
 # python app.py <confirmed_seating_path> <Institute_Name>
 
+
+print(f"""
+{'*'*50}			
+# Developed by Arijit Bhowmick [sys41x4]
+# Lisence Type : GNU AGPLv3 [GNU Affero General Public License v3.0]
+# https://choosealicense.com/licenses/agpl-3.0/
+
+# Project Available at :
+# https://github.com/Arijit-Bhowmick/Give-My-Seat
+# https://github.com/sys41x4/Give-My-Seat
+{'*'*50}
+
+Give My Seat [Institution Exam Seating](Generate Admit Card)
+
+GMS_IES_GAD
+
+     ==-.                     
+   -@@@@@.                    
+   :@@@@@=                    
+    :@@@@                     
+  -=@@@@#.          .         
+ %@@@@@@@@@#.     .*-         
+-@@@@@@@@@@@@.   =+           
+ @@@@@@@@@@@@# .*:  .         
+ :%@@@@@@@@@@@%%:=#%.         
+   *%@@@@@@@@@@@@@@#+..       
+   #@@@@@@@@@@@@@@@@@@@@%#*+: 
+   .#@@@@@@@@@@@@@@@@@@@@@@@@.
+     .=*@@@@@@@@@@@@@@#=@@@@= 
+        *%@@@@@@@@@@@%-@@@@*  
+         :+-=*%#%@@@@=@@@@#   
+              *-*@@@@@@@@#    
+              %#%@@@@@# :     
+      .***#@@@@@@@@@@@%=      
+       +++%#+-*@@@%:+@@@+     
+       .@*     %@@@@..==      
+        :.     =@@@#
+
+
+\n\n
+""")
+
 def help_msg():
 	print("""
-Run The Script with the following Arguments
+Run The Script with the following Arguments\n
 python app.py <host> <port> <Number_of_process_to_use> <Institute_Name> <confirmed_seating_path> <wkhtmltopdf_path> <qr_embed_img_path> <pdf_logo_webaddress>
 """)
 
@@ -31,21 +73,22 @@ try:
 	confirmed_seating_data_path = sys.argv[5]
 	# wkhtmltopdf_path = 'wkhtmltox\\bin\\wkhtmltopdf.exe'
 	wkhtmltopdf_path = sys.argv[6]
+	## embed logo in qr
+	# logo_link = 'sample_images/icon.jpg'
+	logo_link = sys.argv[7]
+
+	## PDF logo on PDF
+	# pdf_logo = 'https://avatars.githubusercontent.com/u/66935336?v=4'
+	pdf_logo = sys.argv[8]
 except IndexError:
 	help_msg()
-	exit()
+	sys.exit()
 
 
 
 json_data=json.load(open(confirmed_seating_data_path))
 
-## embed logo in qr
-# logo_link = 'sample_images/icon.jpg'
-logo_link = sys.argv[7]
 
-## PDF logo on PDF
-# pdf_logo = 'https://avatars.githubusercontent.com/u/66935336?v=4'
-pdf_logo = sys.argv[8]
 
 ## Flask Configurations
 app = Flask(__name__)
@@ -152,4 +195,5 @@ def gen_verifiable_qr_code(student_seating_data):
 
 if __name__ == "__main__":
 	# app.run(host=host, debug=False, port=port)
+	print(f"Starting Production Server at {host}:{port}")
 	serve(app, host=host, port=port)
