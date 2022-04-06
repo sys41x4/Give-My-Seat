@@ -5,14 +5,17 @@
 ### Script Usage
 
 ```
-python3 app.py <confirmed_seating_data.json_File_Path> <Institute_Name>
+python app.py <host> <port> <Number_of_process_to_use> <Institute_Name> <confirmed_seating_path> <wkhtmltopdf_path> <qr_embed_img_path> <pdf_logo_webaddress>
 ```
 
 Example:
 
 ```
-python3 .\app.py .\confirmed_seating_data.json "Give My Seat"
+python3 app.py 127.0.0.1 8090 3 "Give My Seat" .\confirmed_seating_data.json .\wkhtmltox\bin\wkhtmltopdf.exe .\sample_images\icon.jpg https://avatars.githubusercontent.com/u/66935336?v=4
 ```
+
+### Production Server
+`waitress` is used as a `WSGI (Web Server Gateway Interface)` 
 
 ### Web App Usage
 
@@ -25,8 +28,9 @@ Then Click on `Download Admit Card` to download the Admit Card as PDF Format
 
 ### Web App Preview
 
-![screenshot1](sample_images/generate_admit_card_webapp_screenshot1.png)
-![screenshot2](sample_images/generate_admit_card_webapp_screenshot2.png)
+<!-- ![screenshot1](sample_images/generate_admit_card_webapp_screenshot1.png)
+![screenshot2](sample_images/generate_admit_card_webapp_screenshot2.png) -->
+![Webapp](sample_images/Give-My-Seat_Exam_Seating_Webapp.jpg)
 
 ### Want to change images in PDF ?
 
