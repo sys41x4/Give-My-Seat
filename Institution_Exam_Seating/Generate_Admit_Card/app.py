@@ -1,6 +1,7 @@
 from flask import Flask, make_response, jsonify, render_template, request
+from waitress import serve
 import pdfkit
-
+import os
 
 import qrcode
 from PIL import Image
@@ -18,23 +19,33 @@ import sys
 def help_msg():
 	print("""
 Run The Script with the following Arguments
-python app.py <confirmed_seating_path> <Institute_Name>
+python app.py <host> <port> <Number_of_process_to_use> <Institute_Name> <confirmed_seating_path> <wkhtmltopdf_path> <qr_embed_img_path> <pdf_logo_webaddress>
 """)
 
 try:
-	confirmed_seating_data_path = sys.argv[1]
-	institute_name = sys.argv[2]
-	wkhtmltopdf_path = 'wkhtmltox\\bin\\wkhtmltopdf.exe'
+	host = sys.argv[1]
+	port = sys.argv[2]
+	process = int(sys.argv[3])
+	institute_name = sys.argv[4]
+	if (os.path.exists(sys.argv[5])==False) or (os.path.exists(sys.argv[6])==False) or (os.path.exists(sys.argv[7])==False):raise IndexError
+	confirmed_seating_data_path = sys.argv[5]
+	# wkhtmltopdf_path = 'wkhtmltox\\bin\\wkhtmltopdf.exe'
+	wkhtmltopdf_path = sys.argv[6]
 except IndexError:
 	help_msg()
 	exit()
 
 
+
+json_data=json.load(open(confirmed_seating_data_path))
+
 ## embed logo in qr
-logo_link = 'sample_images/logo.jpg'
+# logo_link = 'sample_images/icon.jpg'
+logo_link = sys.argv[7]
 
 ## PDF logo on PDF
-pdf_logo = 'https://avatars.githubusercontent.com/u/66935336?v=4'
+# pdf_logo = 'https://avatars.githubusercontent.com/u/66935336?v=4'
+pdf_logo = sys.argv[8]
 
 ## Flask Configurations
 app = Flask(__name__)
@@ -77,17 +88,20 @@ def generate_pdf(std_seating_info):
 def admitcard(aadhar_num, roll_num):
 	global confirmed_seating_data_path
 
-	std_seating_info = fetch_json_data(confirmed_seating_data_path, roll_num)
+	std_seating_info = fetch_json_data(confirmed_seating_data_path, roll_num.upper(), aadhar_num.upper())
 	
 
 	return generate_pdf(std_seating_info)
 
-def fetch_json_data(confirmed_seating_data_path, roll_num):
+def fetch_json_data(confirmed_seating_data_path, roll_num, aadhar_num):
 
-	json_data=json.load(open(confirmed_seating_data_path))
+	global json_data
 
 	try:
-		std_seating_info = json_data[roll_num.upper()]
+		std_seating_info = json_data[roll_num]
+		if aadhar_num != std_seating_info["aadhar_num"]:
+			return {"std_name": "","branch_name": "","roll_num": roll_num,"aadhar_num": "Aadhar Number is Not Valid","block_num": "","room_num": "","row": "","column": "" }
+	
 	except KeyError:
 		return {"std_name": "","branch_name": "","roll_num": "Enrollment Number is Not Valid","aadhar_num": "","block_num": "","room_num": "","row": "","column": "" }
 
@@ -130,11 +144,12 @@ def gen_verifiable_qr_code(student_seating_data):
 	qr_img.paste(logo, pos)
 
 	buffered = BytesIO()
-	qr_img.save(buffered, format="PNG")
+	qr_img.save(buffered, format="JPEG")
 
 	base64_qr_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
 	return base64_qr_str 
 
 if __name__ == "__main__":
-	app.run(debug=True,port='8090')
+	# app.run(host=host, debug=False, port=port)
+	serve(app, host=host, port=port)
