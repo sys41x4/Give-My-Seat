@@ -158,7 +158,7 @@ class GiveMySeat:
 
 		workbook = openpyxl.Workbook() 
 		sheet = workbook.active
-		sheet.title = "Confirmed Seating Data"
+		sheet.title = f"Seating Data {str(datetime.date(datetime.now()))}"
 
 		# Generate Column Headers
 		column_header=tuple(all_seating_data[tuple(all_seating_data.keys())[0]].keys())
@@ -179,7 +179,7 @@ class GiveMySeat:
 
 			counter+=1
 		workbook.save(f"{book_room_timeperiod}/assigned_seating_data.xlsx")
-		print(f"\nExcel WorkBook has been dumped to {book_room_timeperiod}/assigned_seating_data.xlsx")
+		print(f"\nExcel WorkBook has been dumped to /"{book_room_timeperiod}/"/assigned_seating_data.xlsx")
 		
 	def arrange_seating(table, student_data, value_to_show):
 		global row, col
@@ -513,7 +513,7 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 				json_data_to_use = pre_json_paths
 			else:
 				process_to_use = 'from_workbook'
-				ask = input(f"Please Enter File_Path of {list(workbook_data.keys())[0][:-5]} => ")
+				ask = input(f"Please Enter File_Path of \"{list(workbook_data.keys())[0][:-5]}\" => ")
 				if os.path.exists(ask)==True:
 					workbook_data.update({"workbook_file_path":ask})
 				else:
@@ -522,7 +522,7 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 				workbook_sheet_list = openpyxl.load_workbook(ask).sheetnames
 
 				for path_key in list(workbook_data.keys())[1:]:
-					ask = input(f"Please Enter {path_key} Sheet Name => ")
+					ask = input(f"Please Enter \"{path_key}\" Sheet Name => ")
 
 					if (ask not in workbook_sheet_list):
 						return print(f"Sheet Name {ask} is incorrect\nExiting Program !!!")
