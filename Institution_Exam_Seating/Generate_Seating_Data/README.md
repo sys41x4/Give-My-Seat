@@ -95,9 +95,26 @@ f. Enter `Sample Count (Used during Matrix Formation)`
 
 g. Enter `Want to get the output in terminal ?`
 	Example : `Y` or `N`
+
+#### Speific Instructions during data fetching
+
+1. Use the `column name` of `student data sheet`, as follows:
+	a. Student Name Column Name -> `std_name`
+	b. Student Roll Number Column Name -> `std_rollnum`
+	c. Student Branch Name Column Name -> `std_branch`
+	d. Student Aadhar Column Name -> `std_aadhar`
+
+2. Use the `column name` of `Room Data Sheet`, as follows:
+	a. Block Name Column Name -> `block_name`
+	b. Room Name Column Name -> `room_name`
+	c. Total Row Count in the specified room -> `row`
+	d. Total Column Count in the specified room -> `column`
+
 ---
 
-* After providing data the `assigned_seating_data.json` file will be created where all students with their **Seating Details** will be available in `assigned_seating_data.json` file
+Data generated will be created under `<Starting_Date>-<Ending Date>-<Current Date>` Directory.
+
+* After providing data the `assigned_seating_data.json` file will be created where all students with their **Seating Details** will be available. Further more if you want to get the data in excel sheet, then you can specify `Y/N` when the program start to run, and it will create `assigned_seating_data.xlsx`, having single sheet named as `Seating Data <Current Date>`
 
 * `unassigned_room_data.json` will be created which show the leftover/unallocated Rooms
 
