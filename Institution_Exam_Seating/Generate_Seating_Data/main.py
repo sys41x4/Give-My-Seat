@@ -14,8 +14,47 @@ from numpy import array as np_array
 import json
 import random
 
-
 class GiveMySeat:
+	def prompt():
+		return '\nGiveMySeat >> '
+	def banner():
+		print(f"""
+{'*'*50}			
+# Developed by Arijit Bhowmick [sys41x4]
+# Lisence Type : GNU AGPLv3 [GNU Affero General Public License v3.0]
+# https://choosealicense.com/licenses/agpl-3.0/
+
+# Project Available at :
+# https://github.com/Arijit-Bhowmick/Give-My-Seat
+# https://github.com/sys41x4/Give-My-Seat
+{'*'*50}
+
+     ==-.                     
+   -@@@@@.                    
+   :@@@@@=                    
+    :@@@@                     
+  -=@@@@#.          .         
+ %@@@@@@@@@#.     .*-         
+-@@@@@@@@@@@@.   =+           
+ @@@@@@@@@@@@# .*:  .         
+ :%@@@@@@@@@@@%%:=#%.         
+   *%@@@@@@@@@@@@@@#+..       
+   #@@@@@@@@@@@@@@@@@@@@%#*+: 
+   .#@@@@@@@@@@@@@@@@@@@@@@@@.
+     .=*@@@@@@@@@@@@@@#=@@@@= 
+        *%@@@@@@@@@@@%-@@@@*  
+         :+-=*%#%@@@@=@@@@#   
+              *-*@@@@@@@@#    
+              %#%@@@@@# :     
+      .***#@@@@@@@@@@@%=      
+       +++%#+-*@@@%:+@@@+     
+       .@*     %@@@@..==      
+        :.     =@@@#
+
+
+\n\n
+""")
+
 	def print_indv_branch_table(table):
 		global row, col
 		global current_block, current_room
@@ -179,7 +218,7 @@ class GiveMySeat:
 
 			counter+=1
 		workbook.save(f"{book_room_timeperiod}/assigned_seating_data.xlsx")
-		print(f"\nExcel WorkBook has been dumped to /"{book_room_timeperiod}/"/assigned_seating_data.xlsx")
+		print(f"\nExcel WorkBook has been dumped to \"{book_room_timeperiod}\"/assigned_seating_data.xlsx")
 		
 	def arrange_seating(table, student_data, value_to_show):
 		global row, col
@@ -478,6 +517,8 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 		global want_excel_dump
 		global institute_name
 
+		GiveMySeat.banner()
+
 		# sample_count=10
 
 		# file_path = 'data.xlsx'
@@ -489,19 +530,19 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 		pre_json_paths={"student_data_path":"", "room_data_path":"", "seating_data_path":""}
 		
 		try:
-			pre_json_data_available = input("Do You have already any pre json data created using this script ? Y/N ==> ")
+			pre_json_data_available = input(f"Do You have already any pre json data created using this script ? Y/N{GiveMySeat.prompt()}")
 
 
 			if pre_json_data_available.upper()=='Y':
 				process_to_use = 'from_pre_json'
 				for path_key in list(pre_json_paths.keys())[:-1]:
-					ask_path = input(f"\nPlease Enter File_Path of \"{path_key[:-5]}\" => ")
+					ask_path = input(f"\nPlease Enter File_Path of \"{path_key[:-5]}\"{GiveMySeat.prompt()}")
 					if os.path.exists(ask_path)==True:
 						pre_json_paths.update({path_key:ask_path})
 					else:
 						return print(f"File Path \"{ask_path}\" is incorrect for \"{path_key[:-5]}\"\nExiting Program !!!")
 
-				ask_path = input(f"Please Enter File_Path of seating_data => ")
+				ask_path = input(f"Please Enter File_Path of seating_data{GiveMySeat.prompt()}")
 
 				if ask_path=='':
 					pre_json_paths.update({"seating_data_path":''})
@@ -513,7 +554,7 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 				json_data_to_use = pre_json_paths
 			else:
 				process_to_use = 'from_workbook'
-				ask = input(f"Please Enter File_Path of \"{list(workbook_data.keys())[0][:-5]}\" => ")
+				ask = input(f"Please Enter File_Path of \"{list(workbook_data.keys())[0][:-5]}\"{GiveMySeat.prompt()}")
 				if os.path.exists(ask)==True:
 					workbook_data.update({"workbook_file_path":ask})
 				else:
@@ -522,7 +563,7 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 				workbook_sheet_list = openpyxl.load_workbook(ask).sheetnames
 
 				for path_key in list(workbook_data.keys())[1:]:
-					ask = input(f"Please Enter \"{path_key}\" Sheet Name => ")
+					ask = input(f"Please Enter \"{path_key}\" Sheet Name{GiveMySeat.prompt()}")
 
 					if (ask not in workbook_sheet_list):
 						return print(f"Sheet Name {ask} is incorrect\nExiting Program !!!")
@@ -530,16 +571,16 @@ Please add additional rooms with additional seating in Excel Sheet/JSON File\n""
 
 				json_data_to_use = workbook_data
 				
-			book_room_timeperiod = input("\nTime Period of Seat Booking (<From-Date>-<To-Date>) => ")
+			book_room_timeperiod = input(f"\nTime Period of Seat Booking (<From-Date>-<To-Date>){GiveMySeat.prompt()}")
 			book_room_timeperiod+=f"-[{str(datetime.date(datetime.now()))}]"
 			
 			# Default File Storage Path
 			default_json_file_paths={"student_data_path":f"{book_room_timeperiod}/unassigned_student_data.json", "room_data_path":f"{book_room_timeperiod}/unassigned_room_data.json", "seating_data_path":f"{book_room_timeperiod}/confirmed_seating_data.json"}
 
-			want_excel_dump = input("Do you want to dump to Excel WorkBook as Well ? Y/N (Default: N) => ").upper()
+			want_excel_dump = input(f"Do you want to dump to Excel WorkBook as Well ? Y/N (Default: N){GiveMySeat.prompt()}").upper()
 
-			sample_count = int(input("\nWhat Sample Count Should be taken ? (Default=1) => "))
-			preview_seating_matrix = input("\nDo you want to get the output of the seating in terminal ? Y/N (Default: N) => ").upper()
+			sample_count = int(input(f"\nWhat Sample Count Should be taken ? (Default=1){GiveMySeat.prompt()}"))
+			preview_seating_matrix = input(f"\nDo you want to get the output of the seating in terminal ? Y/N (Default: N) {GiveMySeat.prompt()}").upper()
 			
 
 			if want_excel_dump!='Y':
