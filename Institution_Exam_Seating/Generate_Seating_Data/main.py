@@ -1,3 +1,4 @@
+# coding=utf-8
 # Developed by Arijit Bhowmick [sys41x4]
 # Lisence Type : GNU AGPLv3 [GNU Affero General Public License v3.0]
 # https://choosealicense.com/licenses/agpl-3.0/
@@ -13,6 +14,7 @@ from pandas import read_excel as pd_read_excel
 from numpy import array as np_array
 import json
 import random
+import sys
 
 class GiveMySeat:
 	def prompt():
@@ -28,6 +30,9 @@ class GiveMySeat:
 # https://github.com/Arijit-Bhowmick/Give-My-Seat
 # https://github.com/sys41x4/Give-My-Seat
 {'*'*50}
+
+Give My Seat [Institution Exam Seating](Generate Seating Data)
+GMS_IES_GSD
 
      ==-.                     
    -@@@@@.                    
