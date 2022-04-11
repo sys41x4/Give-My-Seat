@@ -32,7 +32,27 @@ Give My Seat [Institution Exam Seating](Generate Admit Card)
 
 GMS_IES_GAD
 
-{' '*5}==-.\n{' '*3}-{'@'*5}.\n{' '*3}:{'@'*5}=\n{' '*4}:{'@'*4}\n{' '*2}-={'@'*4}#.{' '*10}.\n %{'@'*9}#.{' '*5}.*-\n-{'@'*12}.{' '*3}=+\n {'@'*12}# .*:  .\n :%{'@'*11}%%:=#%.\n{' '*3}*%{'@'*14}#+..\n{' '*3}#{'@'*20}%#*+:\n{' '*3}.#{'@'*24}.\n{' '*5}.=*{'@'*14}#={'@'*4}=\n{' '*8}*%{'@'*11}%-{'@'*4}*\n{' '*9}:+-=*%#%{'@'*4}={'@'*4}#\n{' '*14}*-*{'@'*8}#\n{' '*14}%#%{'@'*5}# :\n{' '*6}.***#{'@'*11}%=\n{' '*7}+++%#+-*{'@'*3}%:+{'@'*3}+\n{' '*7}.@*{' '*5}%{'@'*4}..==\n{' '*8}:.{' '*5}={'@'*3}#
+     ==-.                     
+   -@@@@@.                    
+   :@@@@@=                    
+    :@@@@                     
+  -=@@@@#.          .         
+ %@@@@@@@@@#.     .*-         
+-@@@@@@@@@@@@.   =+           
+ @@@@@@@@@@@@# .*:  .         
+ :%@@@@@@@@@@@%%:=#%.         
+   *%@@@@@@@@@@@@@@#+..       
+   #@@@@@@@@@@@@@@@@@@@@%#*+: 
+   .#@@@@@@@@@@@@@@@@@@@@@@@@.
+     .=*@@@@@@@@@@@@@@#=@@@@= 
+        *%@@@@@@@@@@@%-@@@@*  
+         :+-=*%#%@@@@=@@@@#   
+              *-*@@@@@@@@#    
+              %#%@@@@@# :     
+      .***#@@@@@@@@@@@%=      
+       +++%#+-*@@@%:+@@@+     
+       .@*     %@@@@..==      
+        :.     =@@@#
 
 
 \n\n
@@ -50,13 +70,20 @@ try:
 	institute_name = sys.argv[3]
 	if (os.path.exists(sys.argv[4])==False) or (os.path.exists(sys.argv[5])==False) or (os.path.exists(sys.argv[6])==False):raise IndexError
 	confirmed_seating_data_path = sys.argv[4]
+	# wkhtmltopdf_path = sys.argv[5]
 	logo_link = sys.argv[6]
+	#institute_name = sys.argv[2]
 	wkhtmltopdf_path = 'wkhtmltox\\bin\\wkhtmltopdf.exe'
 except IndexError:
 	help_msg()
 	sys.exit()
 
 json_data=json.load(open(confirmed_seating_data_path))
+## embed logo in qr
+# logo_link = 'sample_images/icon.jpg'
+
+## PDF logo on PDF
+# pdf_logo = 'https://avatars.githubusercontent.com/u/66935336?v=4'
 
 ## Flask Configurations
 app = Flask(__name__)
@@ -161,6 +188,4 @@ def gen_verifiable_qr_code(student_seating_data):
 	return base64_qr_str 
 
 if __name__ == "__main__":
-	# app.run(host=host, debug=True,port='8090')
-	print(f"Starting Production Server at {host}:{port}")
-	serve(app, host=host, port=port)
+	app.run(host=host, debug=True,port='8090')

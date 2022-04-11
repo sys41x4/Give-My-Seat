@@ -27,6 +27,25 @@
 <style type="text/css">
     
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Secular+One&family=Space+Mono&display=swap');
+    /* Table Formating */
+
+    /* spacing */
+
+    table {
+        table-layout:auto;
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table, td, th {
+      border: 1px solid;
+      padding: 5px;
+      text-align: center;
+    }
+
+    th{
+        font-weight: bold;
+    }
+    /* Table Formating END */  
 
     label {
         font-weight: bold;
@@ -50,12 +69,16 @@
 
     }
 
-    .container{
+    /*.container{
         padding: 1%;
         border: 3px solid #202124;
         border-radius: 2%;
         background-color: #202124;
-    }
+    }*/
+
+
+
+
     body{
         background-color: #fff;
     }
@@ -70,35 +93,67 @@
 
 
             <div class="bold-heading column">
-                <img align="left" src={{pdf_logo}}/ style="width: 60px;">
+                <img align="left" src="https://avatars.githubusercontent.com/u/66935336?v=4" style="width: 60px;">
                 <h1 style="text-align: center">{{institute_name}}</h1>
             </div>
 
-            <div class="regular-text column">
-                <img align="right" src="data:image/png;base64, {{base64_qr_str}}"/>
-                </br>
-            </div>
+            <div class="regular-text">
 
-            <div class="regular-text column">
-                <label>Student Name :</label> {{std_name}}
-                </br>
-                <label>Institute Name :</label> {{institute_name}}
-                </br>
-                <label>Branch Name :</label> {{branch_name}}
-                </br>
-                <label>Roll Number :</label> {{roll_num}}
-                </br>
-                <label>Aadhar Number :</label> {{aadhar_num}}
-                </br>
-                <label>Block Number :</label> {{block_num}}
-                </br>
-                <label>Room Number :</label> {{room_num}}
-                </br>
-                <label>Row Number :</label> {{row}}
-                </br>
-                <label>Column Number :</label> {{column}}
-                </br></br><br>
+                <table>
+                    <tr>
+                        <td><img src="https://avatars.githubusercontent.com/u/66935336?v=4" style="width: 200px;"></td>
+                        <td><img src="data:image/png;base64, {{base64_qr_str}}" style="width: 200px"></td>
+                    </tr>
+
+                    <tr>
+                        <th>Institute Name</th>
+                        <td>{{institute_name}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Student Name</th>
+                        <td>{{std_name}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Branch Name</th>
+                        <td>{{branch_name}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Enrollment Number</th>
+                        <td>{{roll_num}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Aadhar Number</th>
+                        <td>{{aadhar_num}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Block Number</th>
+                        <td>{{block_num}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Room Number</td>
+                        <td>{{room_num}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Row Number</th>
+                        <td>{{row}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Column Number</th>
+                        <td>{{column}}</td>
+                    </tr>
+
+                </table>
+            <br><br>
             </div>
+            
 
         </div>
     </div>
@@ -109,7 +164,7 @@ Project is available in https://github.com/Arijit-Bhowmick/Give-My-Seat
 © Copyright Arijit Bhowmick -->
 
     <footer>
-        <div class="ss-copyright">
+        <div class="ss-copyright item">
             Developed by <b>Arijit Bhowmick</b><br>
             Project is available in <b>https://github.com/Arijit-Bhowmick/Give-My-Seat</b><br><br>
             <span>© Copyright <b>Arijit Bhowmick</b> <script>document.write(new Date().getFullYear())</script></span>
