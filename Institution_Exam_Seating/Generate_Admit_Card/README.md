@@ -5,13 +5,13 @@
 ### Script Usage
 
 ```
-python app.py <host> <port> <Number_of_process_to_use> <Institute_Name> <confirmed_seating_path> <wkhtmltopdf_path> <qr_embed_img_path> <pdf_logo_webaddress>
+python app.py <host> <port> <Institute_Name> <confirmed_seating_path> <wkhtmltopdf_path> <qr_embed_img_path>
 ```
 
 Example:
 
 ```
-python3 app.py 127.0.0.1 8090 3 "Give My Seat" .\confirmed_seating_data.json .\wkhtmltox\bin\wkhtmltopdf.exe .\sample_images\icon.jpg https://avatars.githubusercontent.com/u/66935336?v=4
+python3 app.py 127.0.0.1 8090 "Give My Seat" .\confirmed_seating_data.json .\wkhtmltox\bin\wkhtmltopdf.exe .\sample_images\icon.jpg
 ```
 
 ### Production Server
