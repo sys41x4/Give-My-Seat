@@ -3,6 +3,7 @@ from waitress import serve
 import pdfkit
 import os
 
+
 import qrcode
 from PIL import Image
 from io import BytesIO
@@ -15,7 +16,6 @@ import sys
 
 # run the script with the arguments
 # python app.py <confirmed_seating_path> <Institute_Name>
-
 
 print(f"""
 {'*'*50}			
@@ -32,27 +32,7 @@ Give My Seat [Institution Exam Seating](Generate Admit Card)
 
 GMS_IES_GAD
 
-     ==-.                     
-   -@@@@@.                    
-   :@@@@@=                    
-    :@@@@                     
-  -=@@@@#.          .         
- %@@@@@@@@@#.     .*-         
--@@@@@@@@@@@@.   =+           
- @@@@@@@@@@@@# .*:  .         
- :%@@@@@@@@@@@%%:=#%.         
-   *%@@@@@@@@@@@@@@#+..       
-   #@@@@@@@@@@@@@@@@@@@@%#*+: 
-   .#@@@@@@@@@@@@@@@@@@@@@@@@.
-     .=*@@@@@@@@@@@@@@#=@@@@= 
-        *%@@@@@@@@@@@%-@@@@*  
-         :+-=*%#%@@@@=@@@@#   
-              *-*@@@@@@@@#    
-              %#%@@@@@# :     
-      .***#@@@@@@@@@@@%=      
-       +++%#+-*@@@%:+@@@+     
-       .@*     %@@@@..==      
-        :.     =@@@#
+{' '*5}==-.\n{' '*3}-{'@'*5}.\n{' '*3}:{'@'*5}=\n{' '*4}:{'@'*4}\n{' '*2}-={'@'*4}#.{' '*10}.\n %{'@'*9}#.{' '*5}.*-\n-{'@'*12}.{' '*3}=+\n {'@'*12}# .*:  .\n :%{'@'*11}%%:=#%.\n{' '*3}*%{'@'*14}#+..\n{' '*3}#{'@'*20}%#*+:\n{' '*3}.#{'@'*24}.\n{' '*5}.=*{'@'*14}#={'@'*4}=\n{' '*8}*%{'@'*11}%-{'@'*4}*\n{' '*9}:+-=*%#%{'@'*4}={'@'*4}#\n{' '*14}*-*{'@'*8}#\n{' '*14}%#%{'@'*5}# :\n{' '*6}.***#{'@'*11}%=\n{' '*7}+++%#+-*{'@'*3}%:+{'@'*3}+\n{' '*7}.@*{' '*5}%{'@'*4}..==\n{' '*8}:.{' '*5}={'@'*3}#
 
 
 \n\n
@@ -60,35 +40,23 @@ GMS_IES_GAD
 
 def help_msg():
 	print("""
-Run The Script with the following Arguments\n
-python app.py <host> <port> <Number_of_process_to_use> <Institute_Name> <confirmed_seating_path> <wkhtmltopdf_path> <qr_embed_img_path> <pdf_logo_webaddress>
+Run The Script with the following Arguments
+python app.py <host> <port> <Institute_Name> <confirmed_seating_path> <wkhtmltopdf_path> <qr_embed_img_path>
 """)
 
 try:
 	host = sys.argv[1]
 	port = sys.argv[2]
-	process = int(sys.argv[3])
-	institute_name = sys.argv[4]
-	if (os.path.exists(sys.argv[5])==False) or (os.path.exists(sys.argv[6])==False) or (os.path.exists(sys.argv[7])==False):raise IndexError
-	confirmed_seating_data_path = sys.argv[5]
-	# wkhtmltopdf_path = 'wkhtmltox\\bin\\wkhtmltopdf.exe'
-	wkhtmltopdf_path = sys.argv[6]
-	## embed logo in qr
-	# logo_link = 'sample_images/icon.jpg'
-	logo_link = sys.argv[7]
-
-	## PDF logo on PDF
-	# pdf_logo = 'https://avatars.githubusercontent.com/u/66935336?v=4'
-	pdf_logo = sys.argv[8]
+	institute_name = sys.argv[3]
+	if (os.path.exists(sys.argv[4])==False) or (os.path.exists(sys.argv[5])==False) or (os.path.exists(sys.argv[6])==False):raise IndexError
+	confirmed_seating_data_path = sys.argv[4]
+	wkhtmltopdf_path = sys.argv[5]
+	logo_link = sys.argv[6]
 except IndexError:
 	help_msg()
 	sys.exit()
 
-
-
 json_data=json.load(open(confirmed_seating_data_path))
-
-
 
 ## Flask Configurations
 app = Flask(__name__)
@@ -114,8 +82,9 @@ def roll_not_provided(aadhar_num):
 	return generate_pdf(std_seating_info)
 
 def generate_pdf(std_seating_info):
-	std_seating_info.update({'base64_qr_str':gen_verifiable_qr_code(std_seating_info), 'institute_name':institute_name, 'pdf_logo':pdf_logo})
-	rendered = render_template("pdf_templete.html", std_name = std_seating_info['std_name'], branch_name = std_seating_info['branch_name'], roll_num = std_seating_info['roll_num'], aadhar_num = std_seating_info['aadhar_num'], block_num = std_seating_info['block_num'], room_num = std_seating_info['room_num'], row = std_seating_info['row'], column = std_seating_info['column'], pdf_logo=std_seating_info['pdf_logo'], base64_qr_str=std_seating_info['base64_qr_str'], institute_name=std_seating_info['institute_name'])
+
+	qr_data = gen_verifiable_qr_code(f"Institute Name : {institute_name}\nStudent Name : {std_seating_info['std_name']}\nBranch Name : {std_seating_info['branch_name']}\nEnrollment Number : {std_seating_info['roll_num']}\nAadhar Number : {std_seating_info['aadhar_num']}\nBlock Number : {std_seating_info['block_num']}\nRoom Number : {std_seating_info['room_num']}\nRow : {std_seating_info['row']}\nColumn : {std_seating_info['column']}")
+	rendered = render_template("pdf_templete.html", institute_name=institute_name, std_name = std_seating_info['std_name'], branch_name = std_seating_info['branch_name'], roll_num = std_seating_info['roll_num'], aadhar_num = std_seating_info['aadhar_num'], block_num = std_seating_info['block_num'], room_num = std_seating_info['room_num'], row = std_seating_info['row'], column = std_seating_info['column'], base64_qr_str=qr_data)
 
 	pdf = pdfkit.from_string(rendered, False, configuration=pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path))
 
@@ -144,7 +113,6 @@ def fetch_json_data(confirmed_seating_data_path, roll_num, aadhar_num):
 		std_seating_info = json_data[roll_num]
 		if aadhar_num != std_seating_info["aadhar_num"]:
 			return {"std_name": "","branch_name": "","roll_num": roll_num,"aadhar_num": "Aadhar Number is Not Valid","block_num": "","room_num": "","row": "","column": "" }
-	
 	except KeyError:
 		return {"std_name": "","branch_name": "","roll_num": "Enrollment Number is Not Valid","aadhar_num": "","block_num": "","room_num": "","row": "","column": "" }
 
@@ -171,9 +139,8 @@ def gen_verifiable_qr_code(student_seating_data):
 		border=3,
 	)
 
-	student_seating_data = json.dumps(student_seating_data, indent = 1)
-
 	qr.add_data(student_seating_data)
+	# qr.add_data({"std_name": "","branch_name": "","roll_num": "Enrollment Number is Not Valid","aadhar_num": "","block_num": "","room_num": "","row": "","column": "" })
 
 	qr.make(fit=True)
 
@@ -187,13 +154,13 @@ def gen_verifiable_qr_code(student_seating_data):
 	qr_img.paste(logo, pos)
 
 	buffered = BytesIO()
-	qr_img.save(buffered, format="JPEG")
+	qr_img.save(buffered, format="PNG")
 
 	base64_qr_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
 	return base64_qr_str 
 
 if __name__ == "__main__":
-	# app.run(host=host, debug=False, port=port)
+	# app.run(host=host, debug=True,port='8090')
 	print(f"Starting Production Server at {host}:{port}")
 	serve(app, host=host, port=port)
