@@ -50,8 +50,8 @@ try:
 	institute_name = sys.argv[3]
 	if (os.path.exists(sys.argv[4])==False) or (os.path.exists(sys.argv[5])==False) or (os.path.exists(sys.argv[6])==False):raise IndexError
 	confirmed_seating_data_path = sys.argv[4]
+	wkhtmltopdf_path = sys.argv[5]
 	logo_link = sys.argv[6]
-	wkhtmltopdf_path = 'wkhtmltox\\bin\\wkhtmltopdf.exe'
 except IndexError:
 	help_msg()
 	sys.exit()
